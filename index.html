@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>SIR Interactive Demo</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 2rem;
+    }
+    .equation-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+    .fraction-group {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+    .component-box {
+      padding: 1rem;
+      border-radius: 8px;
+      width: 250px;
+    }
+    .saved-box {
+      border: 3px solid blue;
+    }
+    .spent-box {
+      border: 3px solid green;
+    }
+    .sir-box {
+      border: 3px solid purple;
+      text-align: center;
+      height: 120px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    label {
+      font-weight: bold;
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+    input[type=range] {
+      width: 100%;
+    }
+    .readout {
+      font-size: 1.5rem;
+      margin-top: 0.5rem;
+    }
+    .description {
+      font-size: 1.2rem;
+      margin-top: 0.25rem;
+    }
+    .symbol {
+      font-size: 2rem;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h1 style="text-align: center;">SIR Interactive Demo</h1>
+  <p style="text-align: center;">SIR = Money Saved ÷ Money Spent</p>
+
+  <div class="equation-container">
+    <div class="fraction-group">
+      <div class="component-box saved-box">
+        <label for="savingsSlider">Money Saved ($)</label>
+        <input type="range" id="savingsSlider" min="0" max="1000" value="500">
+        <div>Saved: $<span id="savingsValue">500</span></div>
+      </div>
+
+      <div class="symbol">÷</div>
+
+      <div class="component-box spent-box">
+        <label for="investmentSlider">Money Spent ($)</label>
+        <input type="range" id="investmentSlider" min="1" max="1000" value="250">
+        <div>Spent: $<span id="investmentValue">250</span></div>
+      </div>
+    </div>
+
+    <div class="symbol">=</div>
+
+    <div class="component-box sir-box">
+      <div class="readout">SIR: <span id="sirValue">2.00</span></div>
+      <div class="description" id="description">Cost-effective</div>
+    </div>
+  </div>
+
+  <script>
+    const savingsSlider = document.getElementById('savingsSlider');
+    const investmentSlider = document.getElementById('investmentSlider');
+    const savingsValue = document.getElementById('savingsValue');
+    const investmentValue = document.getElementById('investmentValue');
+    const sirValue = document.getElementById('sirValue');
+    const description = document.getElementById('description');
+
+    function updateSIR() {
+      const saved = parseFloat(savingsSlider.value);
+      const spent = parseFloat(investmentSlider.value);
+      const sir = saved / spent;
+
+      savingsValue.textContent = saved;
+      investmentValue.textContent = spent;
+      sirValue.textContent = sir.toFixed(2);
+
+      if (sir < 1) {
+        description.textContent = 'Not cost-effective';
+      } else if (sir === 1) {
+        description.textContent = 'Break-even';
+      } else {
+        description.textContent = 'Cost-effective';
+      }
+    }
+
+    savingsSlider.addEventListener('input', updateSIR);
+    investmentSlider.addEventListener('input', updateSIR);
+
+    updateSIR();
+  </script>
+</body>
+</html>
